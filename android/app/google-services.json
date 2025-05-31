@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "766399237392",
+    "project_id": "feel-better-project-flutter",
+    "storage_bucket": "feel-better-project-flutter.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766399237392:android:1aed42427b76990aece995",
+        "android_client_info": {
+          "package_name": "com.example.feel_better"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBj5JYVYAWr92s-BN3pUfngq9240KC6dPY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
