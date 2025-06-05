@@ -27,6 +27,7 @@ class _ChatScreenState extends State<ChatTab> {
   bool _isFinished = false;
   String _finalMsg = '';
   String _status = '';
+  bool _isDepressed = false;
 
   final TextEditingController _answerController = TextEditingController();
 
@@ -89,12 +90,17 @@ class _ChatScreenState extends State<ChatTab> {
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
 
-        if (_currentQuestion!.qID == 13) {
+        print(
+          '==========Response data===================: $jsonData["at_risk"]',
+        );
+
+        if (_currentQuestion!.qID == 1) {
           setState(() {
             _isFinished = true;
             _finalMsg = 'Thank you for chatting!';
             _status = jsonData['status'] ?? '';
             _isLoading = false;
+            _isDepressed = bool.tryParse(jsonData['at_risk']) ?? false;
           });
         } else {
           setState(() {
@@ -133,7 +139,19 @@ class _ChatScreenState extends State<ChatTab> {
   Widget _buildContent() {
     if (_isLoading) {
       return Center(
-        child: const CircularProgressIndicator(color: Colors.green),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const CircularProgressIndicator(color: Colors.green),
+            const SizedBox(height: 20),
+            const Text(
+              'Setting up...',
+              style: TextStyle(fontSize: 18, color: Colors.grey),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       );
     }
 
@@ -143,6 +161,7 @@ class _ChatScreenState extends State<ChatTab> {
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   _finalMsg,
@@ -153,14 +172,30 @@ class _ChatScreenState extends State<ChatTab> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
-                Text(
-                  'Status: $_status',
-                  style: const TextStyle(fontSize: 18, color: Colors.grey),
-                  textAlign: TextAlign.center,
-                ),
+
+                _isDepressed
+                    ? const Text(
+                        'You are at risk of depression. Please seek help.',
+                        style: TextStyle(fontSize: 18, color: Colors.red),
+                        textAlign: TextAlign.center,
+                      )
+                    : const Text(
+                        'You are not at risk of depression.',
+                        style: TextStyle(fontSize: 18, color: Colors.green),
+                        textAlign: TextAlign.center,
+                      ),
+
+                // _isDepressed? [
+                //   const Text(
+                //     'You are at risk of depression. Please seek help.',
+                //     style: TextStyle(fontSize: 18, color: Colors.red),
+                //     textAlign: TextAlign.center,
+                //   )
+                // ]
               ],
             ),
-            ConfettiDesignWidget(),
+            // DepressedScreen()
+            if (!_isDepressed) ConfettiDesignWidget(),
           ],
         ),
       );

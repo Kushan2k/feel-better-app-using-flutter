@@ -19,6 +19,8 @@ class _HomeTabState extends State<HomeTab> {
 
   String _text = '';
 
+  String _status = '';
+
   @override
   void initState() {
     // TODO: implement initState
@@ -42,6 +44,35 @@ class _HomeTabState extends State<HomeTab> {
     } else {
       fetchName();
     }
+  }
+
+  void update_status(String status) {
+    final db = FirebaseFirestore.instance;
+    db
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({'status': status})
+        .then((value) {
+          setState(() {
+            _status = status;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Status updated to $status'),
+              duration: Duration(seconds: 2),
+              backgroundColor: Colors.green,
+            ),
+          );
+        })
+        .catchError((error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to update status: $error'),
+              duration: Duration(seconds: 2),
+              backgroundColor: Colors.red,
+            ),
+          );
+        });
   }
 
   void fetchQuote() async {
@@ -82,10 +113,12 @@ class _HomeTabState extends State<HomeTab> {
             debugPrint(value.data().toString());
             setState(() {
               _name = value.data()!['first_name'] ?? "User";
+              _status = value.data()!['status'] ?? "Happy";
             });
           } else {
             setState(() {
               _name = "User";
+              _status = "Happy";
             });
           }
         })
@@ -282,26 +315,48 @@ class _HomeTabState extends State<HomeTab> {
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: emotions.map((emotion) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12.0,
-                                ),
-                                child: Column(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 40,
-                                      backgroundColor: emotion['color'],
-                                      child: Text(
-                                        emotion['emoji'],
-                                        style: TextStyle(fontSize: 36),
+                              return GestureDetector(
+                                onTap: () {
+                                  if (emotion['label'] != _status) {
+                                    update_status(emotion['label']);
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'You are already feeling ${emotion['label']}',
+                                        ),
+                                        duration: Duration(seconds: 2),
+                                        backgroundColor: Colors.blue,
                                       ),
-                                    ),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      emotion['label'],
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                  ],
+                                    );
+                                  }
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12.0,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 40,
+                                        backgroundColor: emotion['color'],
+                                        child: Text(
+                                          emotion['emoji'],
+                                          style: TextStyle(
+                                            fontSize:
+                                                _status == emotion['label']
+                                                ? 60
+                                                : 36,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        emotion['label'],
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             }).toList(),
