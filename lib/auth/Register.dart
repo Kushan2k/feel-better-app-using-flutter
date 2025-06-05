@@ -79,6 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         await db.collection('users').doc(cred.user!.uid).set({
           'email': emailController.text,
           'createdAt': Timestamp.now(),
+          'status': 'Happy',
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

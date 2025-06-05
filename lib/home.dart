@@ -13,13 +13,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
 
-  List<Widget> pages = [
-    HomeTab(),
-    ForyouTab(),
-    ChatTab(),
-    Center(child: Text('History')),
-    Center(child: Text('Profile')),
-  ];
+  List<Widget> pages = [HomeTab(), ForyouTab(), ChatTab()];
 
   @override
   Widget build(BuildContext context) {
@@ -80,42 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             icon: Icon(Icons.messenger_outline),
             label: '',
-          ),
-          NavigationDestination(
-            selectedIcon: Container(
-              decoration: BoxDecoration(
-                color: Color(0xFF65D080),
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: const Icon(
-                  Icons.history_edu_rounded,
-                  size: 35,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            icon: Icon(Icons.history),
-            label: 'History',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_2),
-            selectedIcon: Container(
-              decoration: BoxDecoration(
-                color: Color(0xFF65D080),
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: const Icon(
-                  Icons.person_2_outlined,
-                  size: 35,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            label: 'Profile',
           ),
         ],
       ),
