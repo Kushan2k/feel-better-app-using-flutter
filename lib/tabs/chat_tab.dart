@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:feel_better_fixed/dao/confetti_widget.dart';
 import 'package:feel_better_fixed/dao/message.dart';
 import 'package:feel_better_fixed/dao/questions.dart';
+import 'package:feel_better_fixed/tabs/item_screens/depressed_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -26,8 +27,13 @@ class _ChatScreenState extends State<ChatTab> {
 
   bool _isFinished = false;
   String _finalMsg = '';
-  String _status = '';
   bool _isDepressed = false;
+
+  Map<String, List<String>> recommendations = {
+    'movies': [],
+    'books': [],
+    'songs': [],
+  };
 
   final TextEditingController _answerController = TextEditingController();
 
@@ -47,7 +53,6 @@ class _ChatScreenState extends State<ChatTab> {
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
 
-        print('==========Response data===================: $jsonData');
         setState(() {
           _currentQuestion = Question.fromJson(jsonData);
           _hasStarted = true;
@@ -76,6 +81,8 @@ class _ChatScreenState extends State<ChatTab> {
       _error = null;
     });
 
+    print('CAME HERE=====================${_currentQuestion!.qID ?? ''}');
+
     try {
       final response = await http.post(
         Uri.parse('$BASE_URL/respond'),
@@ -91,16 +98,22 @@ class _ChatScreenState extends State<ChatTab> {
         final jsonData = jsonDecode(response.body);
 
         print(
-          '==========Response data===================: $jsonData["at_risk"]',
+          '==========Response data===================: ${jsonData["at_risk"].runtimeType}',
         );
 
-        if (_currentQuestion!.qID == 1) {
+        if (_currentQuestion!.qID == 13) {
+          final rec = jsonData['recommend'] ?? {};
           setState(() {
             _isFinished = true;
             _finalMsg = 'Thank you for chatting!';
-            _status = jsonData['status'] ?? '';
+            // _status = (int.tryParse(jsonData['status']) ?? 0) as String;
             _isLoading = false;
-            _isDepressed = bool.tryParse(jsonData['at_risk']) ?? false;
+            _isDepressed = jsonData['at_risk'];
+            recommendations = {
+              'movies': List<String>.from(rec['movie'] ?? []),
+              'books': List<String>.from(rec['book'] ?? []),
+              'songs': List<String>.from(rec['song'] ?? []),
+            };
           });
         } else {
           setState(() {
@@ -109,6 +122,10 @@ class _ChatScreenState extends State<ChatTab> {
           });
         }
       } else {
+        print(
+          'Failed to load next question. Status code: ${response.statusCode}',
+        );
+        // print('Response body: ${response.body}');
         setState(() {
           _error =
               'Failed to load next question. Status code: ${response.statusCode}';
@@ -116,6 +133,7 @@ class _ChatScreenState extends State<ChatTab> {
         });
       }
     } catch (e) {
+      print('Error occurred: $e');
       setState(() {
         _error = 'Error connecting to server: $e';
         _isLoading = false;
@@ -185,6 +203,49 @@ class _ChatScreenState extends State<ChatTab> {
                         textAlign: TextAlign.center,
                       ),
 
+                const SizedBox(height: 20),
+                _isDepressed
+                    ? TweenAnimationBuilder<double>(
+                        tween: Tween<double>(begin: 1.0, end: 1.1),
+                        duration: const Duration(milliseconds: 600),
+                        curve: Curves.easeInOut,
+                        builder: (context, scale, child) {
+                          return Transform.scale(scale: scale, child: child);
+                        },
+                        onEnd: () {
+                          setState(() {});
+                        },
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Navigate to the depressed screen or show a dialog
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => DepressedScreen(
+                                  movies: recommendations['movies'] ?? [],
+                                  books: recommendations['books'] ?? [],
+                                  songs: recommendations['songs'] ?? [],
+                                ),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 30,
+                              vertical: 6,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          child: const Text(
+                            'Get Help',
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+
                 // _isDepressed? [
                 //   const Text(
                 //     'You are at risk of depression. Please seek help.',
@@ -192,10 +253,11 @@ class _ChatScreenState extends State<ChatTab> {
                 //     textAlign: TextAlign.center,
                 //   )
                 // ]
+                if (_isDepressed == false) ConfettiDesignWidget(),
               ],
             ),
+
             // DepressedScreen()
-            if (!_isDepressed) ConfettiDesignWidget(),
           ],
         ),
       );

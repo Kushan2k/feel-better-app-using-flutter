@@ -181,13 +181,41 @@ class _HomeTabState extends State<HomeTab> {
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  FirebaseAuth.instance.signOut().then((value) {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => SignInScreen(),
+                                  AlertDialog alert = AlertDialog(
+                                    shape: LinearBorder(),
+                                    backgroundColor: Colors.green.shade100,
+                                    title: Text("Logout"),
+                                    content: Text(
+                                      "Are you sure you want to logout?",
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          FirebaseAuth.instance.signOut();
+                                          Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SignInScreen(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text("Yes"),
                                       ),
-                                    );
-                                  });
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("No"),
+                                      ),
+                                    ],
+                                  );
+
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return alert;
+                                    },
+                                  );
                                 },
 
                                 icon: Container(
