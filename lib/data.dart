@@ -227,6 +227,109 @@ class Data {
     },
   ];
 
+  static final List<Map<String, String>> depressionArticles = [
+    {
+      "title": "10 Small Daily Habits to Fight Depression",
+      "content":
+          "Start your day with a 5-minute gratitude list. Move your body with light exercise. Limit your social media exposure. Eat balanced meals. Hydrate. Go outside. Practice deep breathing. Sleep on time. Celebrate small wins. Repeat daily.",
+    },
+    {
+      "title": "Talking Heals: The Power of Sharing",
+      "content":
+          "Talking to a trusted friend, counselor, or even journaling can ease emotional burdens. Expression helps release pent-up emotions and reduces the feeling of being trapped.",
+    },
+    {
+      "title": "Exercise Your Way Out of Darkness",
+      "content":
+          "Regular physical activity releases endorphins, the body’s natural mood boosters. A brisk 20-minute walk, yoga, or dancing can significantly improve your mood over time.",
+    },
+    {
+      "title": "Why Sleep Is the Secret Weapon",
+      "content":
+          "Consistent and quality sleep is critical for mental health. Establish a bedtime routine, avoid screens before bed, and wake up at the same time every day—even on weekends.",
+    },
+    {
+      "title": "Social Connection: The Antidote to Isolation",
+      "content":
+          "Even if you don’t feel like it, spending time with people who care about you makes a difference. A call, a coffee meet-up, or group activity helps reduce feelings of loneliness.",
+    },
+    {
+      "title": "Rewire Your Brain with Positivity",
+      "content":
+          "Your thoughts shape your reality. Replace 'I can't' with 'I'm trying.' Practice daily affirmations and challenge negative beliefs through cognitive-behavioral techniques.",
+    },
+    {
+      "title": "The Healing Power of Nature",
+      "content":
+          "Spending time in green spaces, forests, or even tending a small garden can lift your spirits. Nature exposure reduces cortisol and helps clear the mind.",
+    },
+    {
+      "title": "Nutrition and Depression: What's the Link?",
+      "content":
+          "What you eat impacts how you feel. Omega-3s, vitamin D, and avoiding excess sugar and caffeine are linked to improved mood. Eat mindfully and nourish your brain.",
+    },
+    {
+      "title": "Mindfulness and Meditation for Mental Clarity",
+      "content":
+          "Practicing mindfulness helps you stay present. Meditation, even just 5 minutes a day, reduces stress and improves emotional regulation. Try guided meditations or apps.",
+    },
+    {
+      "title": "Set Goals—Even Tiny Ones",
+      "content":
+          "Depression can make everything feel overwhelming. Break tasks into small steps. Celebrate each one. Progress, no matter how small, builds confidence and hope.",
+    },
+    {
+      "title": "Volunteer and Find Purpose",
+      "content":
+          "Helping others gives you a sense of value and connection. Volunteering, mentoring, or even small acts of kindness can shift focus outward and spark joy.",
+    },
+    {
+      "title": "Limit Alcohol and Avoid Drugs",
+      "content":
+          "Substances might numb pain temporarily but worsen depression in the long run. Seek healthier coping methods and get professional help if needed.",
+    },
+    {
+      "title": "You Are Not Alone: When to Seek Professional Help",
+      "content":
+          "Therapists, psychologists, and support groups can help you feel understood and develop personalized recovery plans. Asking for help is strength—not weakness.",
+    },
+    {
+      "title": "Digital Detox: Unplug to Reconnect",
+      "content":
+          "Constant comparison on social media can fuel sadness. Try a weekend detox, disable notifications, or replace screen time with real-world activities.",
+    },
+    {
+      "title": "Pet Therapy: Let Animals Help You Heal",
+      "content":
+          "Pets offer unconditional love and companionship. Studies show they reduce stress and bring emotional stability. Even brief interactions can elevate mood.",
+    },
+    {
+      "title": "Laughter is Medicine",
+      "content":
+          "Watch a comedy, talk to a funny friend, or join a laughter yoga session. Laughter releases endorphins and shifts mental energy toward positivity.",
+    },
+    {
+      "title": "Music and Mood: Create a Healing Playlist",
+      "content":
+          "Music can be incredibly therapeutic. Make a playlist of songs that make you feel calm, empowered, or hopeful. Let sound be your sanctuary.",
+    },
+    {
+      "title": "Learn Something New to Break the Cycle",
+      "content":
+          "Learning a new skill activates new neural pathways, gives a sense of accomplishment, and distracts from rumination. Try painting, coding, or cooking.",
+    },
+    {
+      "title": "Create a Safe Routine",
+      "content":
+          "Structure combats chaos. A daily routine—wake, eat, move, rest—gives you something predictable and helps restore a sense of control.",
+    },
+    {
+      "title": "Forgive Yourself and Let Go",
+      "content":
+          "Self-blame traps you. Practice self-compassion. Understand your past, but don’t live in it. Forgiveness is freedom—and it starts with you.",
+    },
+  ];
+
   static List<Map<String, dynamic>> get_shuffled_novels() {
     novels.shuffle(Random());
 
@@ -237,5 +340,12 @@ class Data {
     popularSongs.shuffle(Random());
 
     return popularSongs;
+  }
+
+  static List<Map<String, dynamic>> get_shuffled_articals() {
+    // For demonstration, returning an empty list as no articles are defined
+
+    depressionArticles.shuffle(Random());
+    return depressionArticles;
   }
 }

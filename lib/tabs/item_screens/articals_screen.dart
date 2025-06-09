@@ -1,25 +1,27 @@
 import 'package:feel_better_fixed/data.dart';
 import 'package:flutter/material.dart';
 
-class MusicScreen extends StatefulWidget {
-  const MusicScreen({super.key});
+class ArticalsScreen extends StatefulWidget {
+  const ArticalsScreen({super.key});
 
   @override
-  State<MusicScreen> createState() => _MusicScreenState();
+  State<ArticalsScreen> createState() => _ArticalsScreenState();
 }
 
-class _MusicScreenState extends State<MusicScreen> {
+class _ArticalsScreenState extends State<ArticalsScreen> {
   bool _isLoading = true;
 
-  List<Map<String, dynamic>> songs = [];
+  List<Map<String, dynamic>> articals = [];
 
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
+
     Future.delayed(const Duration(seconds: 2), () {
       setState(() {
-        songs = Data.get_shuffled_songs();
+        articals = Data.get_shuffled_articals();
         _isLoading = false;
       });
     });
@@ -32,24 +34,19 @@ class _MusicScreenState extends State<MusicScreen> {
       body: Center(
         child: _isLoading
             ? const CircularProgressIndicator()
-            : songs.isNotEmpty
+            : articals.isNotEmpty
             ? ListView.builder(
-                itemCount: songs.length,
+                itemCount: articals.length,
                 itemBuilder: (context, index) {
-                  final movie = songs[index];
+                  final movie = articals[index];
                   return ListTile(
                     title: Text(movie['title'] ?? 'No Title'),
-                    subtitle: Text(movie['artist'] ?? 'No Artist'),
-                    leading: const Icon(
-                      Icons.music_note,
-                      size: 40,
-                      color: Colors.blue,
-                    ),
+                    subtitle: Text(movie['content'] ?? 'No content'),
                   );
                 },
               )
             : const Text(
-                'No songs available',
+                'No articals available',
                 style: TextStyle(fontSize: 18, color: Colors.grey),
               ),
       ),
