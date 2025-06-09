@@ -1,4 +1,6 @@
 import 'package:feel_better_fixed/tabs/item_screens/films_screen.dart';
+import 'package:feel_better_fixed/tabs/item_screens/music_screen.dart';
+import 'package:feel_better_fixed/tabs/item_screens/novels_screen.dart';
 import 'package:flutter/material.dart';
 
 class ForyouTab extends StatefulWidget {
@@ -11,11 +13,11 @@ class ForyouTab extends StatefulWidget {
 class _ForyouTabState extends State<ForyouTab> {
   final List<Map<String, dynamic>> recommendations = [
     {'title': '', 'image': 'assets/films.png', 'page': MoviesScreen()},
-    {'title': '', 'image': 'assets/novels.png', 'page': MoviesScreen()},
-    {'title': '', 'image': 'assets/music.png', 'page': MoviesScreen()},
+    {'title': '', 'image': 'assets/novels.png', 'page': NovelsScreen()},
+    {'title': '', 'image': 'assets/music.png', 'page': MusicScreen()},
     {'title': '', 'image': 'assets/nature.png', 'page': MoviesScreen()},
     {'title': '', 'image': 'assets/articales.png', 'page': MoviesScreen()},
-    {'title': '', 'image': 'assets/channelling.png', 'page': MoviesScreen()},
+    // {'title': '', 'image': 'assets/channelling.png', 'page': MoviesScreen()},
   ];
 
   @override
