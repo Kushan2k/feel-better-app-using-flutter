@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class HomeTab extends StatefulWidget {
-  const HomeTab({super.key});
+  final Function navigate;
+  const HomeTab({super.key, required this.navigate});
 
   @override
   State<HomeTab> createState() => _HomeTabState();
@@ -399,7 +400,11 @@ class _HomeTabState extends State<HomeTab> {
                                 fit: BoxFit.contain,
                               ),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    widget.navigate(2); // Navigate to chat
+                                  });
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.transparent,
                                   shadowColor: Colors.transparent,
@@ -433,26 +438,23 @@ class _HomeTabState extends State<HomeTab> {
                                       ),
                                     ],
                                   ),
-                                  child: GestureDetector(
-                                    onTap: () {},
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          'Chat with Mindy',
-                                          style: TextStyle(
-                                            color: Colors.black87,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                          ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        'Chat with Mindy',
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
                                         ),
-                                        SizedBox(width: 8),
-                                        Icon(
-                                          Icons.auto_awesome,
-                                          color: Colors.black54,
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Icon(
+                                        Icons.auto_awesome,
+                                        color: Colors.black54,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
