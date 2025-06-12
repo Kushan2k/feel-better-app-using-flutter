@@ -13,7 +13,20 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
 
-  List<Widget> pages = [HomeTab(), ForyouTab(), ChatTab()];
+  void change(int i) {
+    print('============================================clicked');
+    setState(() {
+      index = i;
+    });
+  }
+
+  late List<Widget> pages;
+
+  @override
+  void initState() {
+    super.initState();
+    pages = [HomeTab(navigate: change), ForyouTab(), ChatTab()];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: pages[index],
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int i) {
-          setState(() {
-            index = i;
-          });
+          change(i);
         },
         backgroundColor: Color(0XE8FAEA),
         selectedIndex: index,

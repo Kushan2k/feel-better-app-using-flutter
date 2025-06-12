@@ -138,17 +138,35 @@ class _ChatScreenState extends State<ChatTab> {
         _error = 'Error connecting to server: $e';
         _isLoading = false;
       });
+    } finally {
+      // Clear the answer controller after getting the next question
+      _answerController.clear();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: _buildContent(),
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+
+          gradient: const LinearGradient(
+            colors: [
+              Color.fromARGB(255, 240, 240, 240),
+              Color.fromARGB(255, 121, 236, 160),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        height: MediaQuery.of(context).size.height,
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: _buildContent(),
+          ),
         ),
       ),
     );
@@ -357,24 +375,34 @@ class _ChatScreenState extends State<ChatTab> {
     }
 
     // Show question and answer buttons
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-            child: Text(
-              _currentQuestion?.text ?? 'No question available',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.right,
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Positioned(
+            bottom: 0,
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Text(
+                _currentQuestion?.text ?? 'No question available',
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.right,
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 30),
-        ..._buildAnswerButtons(),
-      ],
+          const SizedBox(height: 30),
+          ..._buildAnswerButtons(),
+
+          // ..._buildAnswerButtons(),
+        ],
+      ),
     );
   }
 
@@ -398,7 +426,9 @@ class _ChatScreenState extends State<ChatTab> {
                 controller: _answerController,
 
                 decoration: InputDecoration(
-                  hintText: 'Enter an answer...',
+                  hintText: _currentQuestion!.qID > 2
+                      ? 'Enter Number between 1-5'
+                      : 'Enter your answer',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide.none,
@@ -423,8 +453,23 @@ class _ChatScreenState extends State<ChatTab> {
                     );
                     return;
                   }
+                  if (_currentQuestion!.qID > 2) {
+                    if (ans < 1 || ans > 5) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Please enter a number between 1 and 5',
+                          ),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                      return;
+                    }
+                  }
+
                   if (ans != 0) {
                     _getNextQuestion(answer: double.parse(ans.toString()));
+                    _answerController.clear();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
