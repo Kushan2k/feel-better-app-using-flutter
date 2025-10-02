@@ -49,21 +49,22 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBj5JYVYAWr92s-BN3pUfngq9240KC6dPY',
-    appId: '1:766399237392:android:1aed42427b76990aece995',
-    messagingSenderId: '766399237392',
-    projectId: 'feel-better-project-flutter',
-    storageBucket: 'feel-better-project-flutter.firebasestorage.app',
-  );
+static const FirebaseOptions android = FirebaseOptions(
+  apiKey: '',
+  appId: '',
+  messagingSenderId: '',
+  projectId: '',
+  storageBucket: '',
+);
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCaZXRHSBckx6438p5oNnsuJk-7oZBMpcY',
-    appId: '1:766399237392:ios:477e324998ddc329ece995',
-    messagingSenderId: '766399237392',
-    projectId: 'feel-better-project-flutter',
-    storageBucket: 'feel-better-project-flutter.firebasestorage.app',
-    iosBundleId: 'com.example.feelBetter',
-  );
+static const FirebaseOptions ios = FirebaseOptions(
+  apiKey: '',
+  appId: '',
+  messagingSenderId: '',
+  projectId: '',
+  storageBucket: '',
+  iosBundleId: '',
+);
+
 
 }
